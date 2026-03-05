@@ -52,23 +52,17 @@ class Experts(nn.Module):
         self.fc2 = BatchedLinear(num_experts, hidden_dim, dim)  # (num_experts, dim, hidden_dim)
     
     def forward(self, x, expert_idx):
-        # x: (batch, dim), expert_idx: (batch,)
-        
-        # Get weights for selected experts
-        fc1_sel = self.fc1.weight[expert_idx]  # (batch, hidden, dim)
-        fc2_sel = self.fc2.weight[expert_idx]  # (batch, dim, hidden)
-        
-        # x: (batch, dim) -> (batch, 1, dim)
-        x = x.unsqueeze(1)
-        
-        # matmul: (batch, 1, dim) @ (batch, dim, hidden) -> (batch, 1, hidden)
-        h = torch.bmm(x, fc1_sel.transpose(-1, -2))  # (batch, 1, hidden)
-        h = F.silu(h)
-        
-        # matmul: (batch, 1, hidden) @ (batch, hidden, dim) -> (batch, 1, dim)
-        out = torch.bmm(h, fc2_sel.transpose(-1, -2))  # (batch, 1, dim)
-        
-        return out.squeeze(1)  # (batch, dim)
+        # x: (N, dim), expert_idx: (N,)
+        out = torch.zeros_like(x)
+        for i in range(self.fc1.weight.shape[0]):
+            mask = (expert_idx == i)
+            if mask.any():
+                x_i = x[mask]
+                w1 = self.fc1.weight[i]
+                w2 = self.fc2.weight[i]
+                h = F.silu(F.linear(x_i, w1))
+                out[mask] = F.linear(h, w2)
+        return out
 
 class MoELayer(nn.Module):
     def __init__(self, args: ModelArgs):
