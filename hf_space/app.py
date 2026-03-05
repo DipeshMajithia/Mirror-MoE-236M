@@ -79,12 +79,19 @@ for name, filename in MODELS_CONFIG.items():
 if not loaded_models:
     print("⚠️ CRITICAL: No models loaded. App will crash.")
 
+# --- Chat Configuration ---
+SYSTEM_PROMPT = """You are MirrorAI, a personal AI assistant created by Dipesh Majithia.
+You are helpful, friendly, and knowledgeable.
+When you need factual information, use: <call>search_knowledge("query")</call>
+When you need to perform math calculations, use: <call>calculator("expression")</call>
+If the user's request is conversational or personal (about you or Dipesh Majithia), answer directly.
+"""
+
 # --- Inference Logic ---
 def generate_response(message, history, model_choice):
     """
-    Generates response using the selected model.
+    Generates response using the selected model with repetition penalty.
     """
-    # Default to first model if choice is invalid or None
     if not model_choice or model_choice not in loaded_models:
         model_choice = list(loaded_models.keys())[0] if loaded_models else None
         
@@ -94,42 +101,34 @@ def generate_response(message, history, model_choice):
 
     model = loaded_models[model_choice]
 
-    # 1. Prompt Building (No System Prompt)
-    full_prompt = ""
-    # Gradio 4.x: history is list of tuples: [(user_msg, bot_msg), ...]
-    recent_history = history[-4:] if history else []
-    
-    for turn in recent_history:
-        if isinstance(turn, (list, tuple)) and len(turn) >= 2:
-            user_msg, bot_msg = turn[0], turn[1]
-            if user_msg:
-                full_prompt += f"User: {user_msg}\n"
-            if bot_msg:
-                full_prompt += f"Assistant: {bot_msg}\n"
-        elif isinstance(turn, dict):
-             # Fallback
-            if turn.get('role') == 'user':
-                full_prompt += f"User: {turn['content']}\n"
-            elif turn.get('role') == 'assistant':
-                full_prompt += f"Assistant: {turn['content']}\n"
-    
-    full_prompt += f"User: {message}\nAssistant:"
+    # 1. Prompt Building (Aligned with Training - Single Turn Only)
+    full_prompt = f"System: {SYSTEM_PROMPT}\nUser: {message}\nAssistant: "
     
     # Tokenize
-    tokens = tokenizer.encode(full_prompt).ids[-400:] # Keep context short
+    tokens = tokenizer.encode(full_prompt).ids[-448:] # Slightly larger window
     input_ids = torch.tensor([tokens]).to(DEVICE)
     
-    # Generate
-    max_new_tokens = 120
-    temperature = 0.6
+    # Generation Params
+    max_new_tokens = 200
+    temperature = 0.7
     top_k = 40
+    repetition_penalty = 1.5 # Stabilize output (matched to MLX)
     
     generated_text = ""
+    generated_tokens = []
     
     with torch.no_grad():
         for i in range(max_new_tokens):
             logits = model(input_ids)
-            next_token_logits = logits[:, -1, :]
+            next_token_logits = logits[0, -1, :]
+            
+            # Apply Repetition Penalty
+            if generated_tokens:
+                for tid in set(generated_tokens):
+                    if next_token_logits[tid] > 0:
+                        next_token_logits[tid] /= repetition_penalty
+                    else:
+                        next_token_logits[tid] *= repetition_penalty
             
             # Sampling Strategy: Temp + Top-K
             next_token_logits = next_token_logits / temperature
@@ -138,30 +137,30 @@ def generate_response(message, history, model_choice):
             
             # Sample
             next_token_index = torch.multinomial(probs, num_samples=1)
-            next_token = top_k_indices.gather(-1, next_token_index).item()
+            next_token = top_k_indices[next_token_index].item()
             
             # Stop if EOS (3)
             if next_token == 3:
                 break
             
+            generated_tokens.append(next_token)
             decoded_char = tokenizer.decode([next_token])
             
-            # Stop strings
-            # "User", "Instruction", "Context" often appear as hallucinations
-            stop_strings = ["\nUser", "User:", "\nInstruction", "Instruction:", "Context:", "\nContext"]
+            # Stop strings logic
+            stop_strings = ["\nUser", "User:", "\nAssistant", "Assistant:", "Context:"]
             
-            # Optimization: Don't print the stop string itself
-            temp_text = generated_text + decoded_char
-            found_stop = False
+            generated_text += decoded_char
+            
+            # Check for stop strings
+            break_loop = False
             for s in stop_strings:
-                if s in temp_text:
-                    found_stop = True
+                if s in generated_text:
+                    generated_text = generated_text.split(s)[0]
+                    break_loop = True
                     break
             
-            if found_stop:
-                break
+            if break_loop: break
                 
-            generated_text += decoded_char
             yield generated_text.strip()
             
             # Update input
