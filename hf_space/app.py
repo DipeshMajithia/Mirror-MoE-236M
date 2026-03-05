@@ -182,13 +182,13 @@ demo = gr.ChatInterface(
         )
     ],
     title="Mirror-MoE-80M",
-    description="An 81M parameter Sparse MoE model. Select 'Hybrid' for general chat or 'Elite' for reasoning.",
+    description="An 236M parameter Sparse MoE model.",
     examples=[
-        ["Who are you?", "Master (All-Rounder)"],
-        ["Write a Python function for a Fibonacci sequence.", "Master (All-Rounder)"],
-        ["Hi!", "Hybrid (Chat + Facts)"],
-        ["Tell me a short story.", "Hybrid (Chat + Facts)"],
-        ["What is 15 * 12?", "Elite (Logic + IQ)"]
+        ["Who are you?", "MirrorAI V3 (236M MoE)"],
+        ["What is 125 + 372?", "MirrorAI V3 (236M MoE)"],
+        ["Hi!", "MirrorAI V3 (236M MoE)"],
+        ["Tell me a short story.", "MirrorAI V3 (236M MoE)"],
+        ["What is the capital of France?", "MirrorAI V3 (236M MoE)"]
     ]
 )
 
