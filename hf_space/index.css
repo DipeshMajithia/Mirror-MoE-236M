@@ -1,0 +1,285 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap');
+
+:root {
+    --bg-color: #050505;
+    --card-bg: rgba(20, 20, 25, 0.6);
+    --accent-primary: #007AFF; /* Apple blue */
+    --accent-secondary: #5E5CE6; /* Apple indigo */
+    --text-primary: #ffffff;
+    --text-secondary: #a1a1aa;
+    --border-color: rgba(255, 255, 255, 0.1);
+    --glass-blur: blur(12px);
+    --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-primary);
+    line-height: 1.6;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4 {
+    font-family: 'Outfit', sans-serif;
+    font-weight: 700;
+}
+
+.container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 2rem;
+}
+
+/* Glassmorphism Classes */
+.glass {
+    background: var(--card-bg);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    border: 1px solid var(--border-color);
+    border-radius: 20px;
+}
+
+/* Hero Section */
+.hero {
+    height: 90vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    position: relative;
+    background: radial-gradient(circle at 50% 50%, rgba(0, 122, 255, 0.15) 0%, transparent 70%);
+}
+
+.hero h1 {
+    font-size: 5rem;
+    letter-spacing: -2px;
+    margin-bottom: 1rem;
+    background: linear-gradient(135deg, #fff 0%, #a1a1aa 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.hero p {
+    font-size: 1.5rem;
+    color: var(--text-secondary);
+    max-width: 700px;
+    margin-bottom: 2rem;
+}
+
+.badge {
+    background: rgba(0, 122, 255, 0.2);
+    color: var(--accent-primary);
+    padding: 0.5rem 1.2rem;
+    border-radius: 100px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    border: 1px solid rgba(0, 122, 255, 0.3);
+    margin-bottom: 1.5rem;
+}
+
+/* Sections */
+section {
+    padding: 6rem 0;
+}
+
+.section-title {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+    text-align: center;
+}
+
+.section-subtitle {
+    color: var(--text-secondary);
+    text-align: center;
+    margin-bottom: 4rem;
+    font-size: 1.1rem;
+}
+
+/* MOE Visualization */
+.moe-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.5rem;
+    margin-top: 2rem;
+}
+
+.expert-card {
+    padding: 1.5rem;
+    text-align: center;
+    transition: var(--transition);
+    position: relative;
+}
+
+.expert-card.active {
+    border-color: var(--accent-primary);
+    box-shadow: 0 0 20px rgba(0, 122, 255, 0.2);
+    transform: translateY(-5px);
+}
+
+.expert-card h4 {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+}
+
+.expert-status {
+    height: 4px;
+    width: 0;
+    background: var(--accent-primary);
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    border-radius: 0 0 20px 20px;
+    transition: width 0.3s ease;
+}
+
+.expert-card.active .expert-status {
+    width: 100%;
+}
+
+/* Chat Simulation */
+.chat-window {
+    max-width: 800px;
+    margin: 0 auto;
+    height: 500px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.chat-header {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid var(--border-color);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.chat-messages {
+    flex: 1;
+    padding: 1.5rem;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.message {
+    max-width: 85%;
+    padding: 1rem 1.25rem;
+    border-radius: 18px;
+    font-size: 0.95rem;
+}
+
+.message.user {
+    background: rgba(255, 255, 255, 0.08);
+    align-self: flex-end;
+    border-bottom-right-radius: 4px;
+}
+
+.message.bot {
+    background: rgba(0, 122, 255, 0.15);
+    align-self: flex-start;
+    border-bottom-left-radius: 4px;
+    border: 1px solid rgba(0, 122, 255, 0.2);
+}
+
+.tool-call {
+    font-family: monospace;
+    background: rgba(0, 0, 0, 0.3);
+    padding: 0.5rem;
+    border-radius: 8px;
+    border-left: 3px solid var(--accent-primary);
+    margin: 0.5rem 0;
+    font-size: 0.85rem;
+    color: #ffd700;
+}
+
+.results-badge {
+    background: rgba(16, 185, 129, 0.15);
+    color: #10b981;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    margin-right: 5px;
+}
+
+/* Benchmark Grid */
+.benchmark-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+}
+
+.benchmark-card {
+    padding: 2rem;
+    text-align: center;
+}
+
+.benchmark-value {
+    font-size: 3rem;
+    font-weight: 800;
+    font-family: 'Outfit', sans-serif;
+    color: var(--accent-primary);
+    margin-bottom: 0.5rem;
+}
+
+.benchmark-label {
+    font-weight: 600;
+    margin-bottom: 1rem;
+}
+
+.benchmark-comp {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+}
+
+.comp-highlight {
+    color: #10b981;
+    font-weight: 700;
+}
+
+/* Footer & Buttons */
+.footer {
+    padding: 4rem 0;
+    text-align: center;
+    color: var(--text-secondary);
+    border-top: 1px solid var(--border-color);
+}
+
+.btn {
+    display: inline-block;
+    padding: 1rem 2rem;
+    background: var(--accent-primary);
+    color: white;
+    text-decoration: none;
+    border-radius: 12px;
+    font-weight: 600;
+    transition: var(--transition);
+}
+
+.btn-outline {
+    background: transparent;
+    border: 1px solid var(--border-color);
+    color: var(--text-primary);
+}
+
+.btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px rgba(0, 122, 255, 0.3);
+}
+
+@media (max-width: 768px) {
+    .hero h1 { font-size: 3rem; }
+    .moe-grid { grid-template-columns: repeat(2, 1fr); }
+    .hero p { font-size: 1.1rem; }
+}

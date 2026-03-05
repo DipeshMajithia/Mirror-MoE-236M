@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MirrorAI V3 — SOTA 236M MoE</title>
+    <link rel="stylesheet" href="index.css">
+</head>
+
+<body>
+    <div class="hero">
+        <div class="badge">SOTA 236M MoE Model</div>
+        <h1>MirrorAI V3</h1>
+        <p>A native Apple Silicon language model with integrated tool-calling and Mixture-of-Experts architecture.</p>
+        <div class="hero-btns" style="display: flex; gap: 1rem;">
+            <a href="https://huggingface.co/DipeshMajithia/MirrorAI-V3" class="btn">View Weights</a>
+            <a href="https://github.com/DipeshMajithia/Mirror-MoE-236M" class="btn btn-outline">GitHub Repo</a>
+        </div>
+    </div>
+
+    <div class="container">
+        <!-- Architecture Section -->
+        <section id="architecture">
+            <h2 class="section-title">Mixture-of-Experts</h2>
+            <p class="section-subtitle">236M total parameters. 16 Experts. Top-2 Routing. ~62M active parameters per
+                token.</p>
+
+            <div class="moe-grid" id="expert-grid">
+                <!-- Experts will be injected by JS -->
+            </div>
+            <p style="text-align: center; margin-top: 2rem; color: var(--text-secondary); font-size: 0.9rem;">
+                Every token is routed to 2 specialists + 1 shared expert for maximum stability.
+            </p>
+        </section>
+
+        <!-- Chat / Tool Calling Section -->
+        <section id="demo">
+            <h2 class="section-title">Atomic Tool Calling</h2>
+            <p class="section-subtitle">Real-time simulation of integrated Calculator and Knowledge Retrieval APIs.</p>
+
+            <div class="chat-window glass">
+                <div class="chat-header">
+                    <span style="font-weight: 600;">MirrorAI V3 Bot</span>
+                    <span style="font-size: 0.8rem; color: #10b981;">● Online</span>
+                </div>
+                <div class="chat-messages" id="chat-messages">
+                    <!-- Messages injected by JS -->
+                </div>
+                <div class="chat-input-area"
+                    style="padding: 1rem; background: rgba(255, 255, 255, 0.03); border-top: 1px solid var(--border-color); display: flex; gap: 0.5rem;">
+                    <input type="text" id="user-input" placeholder="Ask MirrorAI anything..."
+                        style="flex: 1; background: rgba(0,0,0,0.2); border: 1px solid var(--border-color); color: white; padding: 0.8rem; border-radius: 8px; outline: none;">
+                    <button id="send-btn" class="btn" style="padding: 0.5rem 1.2rem; font-size: 0.9rem;">Send</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Benchmark Section -->
+        <section id="benchmarks">
+            <h2 class="section-title">Data Efficiency SOTA</h2>
+            <p class="section-subtitle">Competitive results on just 61M tokens (33,000x less than SmolLM2).</p>
+
+            <div class="benchmark-grid">
+                <div class="benchmark-card glass">
+                    <div class="benchmark-value">26.0%</div>
+                    <div class="benchmark-label">MMLU (Knowledge)</div>
+                    <div class="benchmark-comp">Beats SmolLM2 (23.1%) & GPT-2 (25.0%)</div>
+                </div>
+                <div class="benchmark-card glass">
+                    <div class="benchmark-value">37.0%</div>
+                    <div class="benchmark-label">ARC-Easy (Science)</div>
+                    <div class="benchmark-comp">Beats OPT-125M (22.9%)</div>
+                </div>
+                <div class="benchmark-card glass">
+                    <div class="benchmark-value">51.3</div>
+                    <div class="benchmark-label">Tokens/Sec</div>
+                    <div class="benchmark-comp">Native speed on <span class="comp-highlight">Apple M4</span></div>
+                </div>
+            </div>
+        </section>
+
+        <section id="roadmap" style="text-align: center;">
+            <h2 class="section-title">Ready to run on your Mac?</h2>
+            <p class="section-subtitle">Run our optimized chat script with just one command.</p>
+            <div class="glass"
+                style="padding: 2rem; max-width: 600px; margin: 0 auto; text-align: left; font-family: monospace; font-size: 0.9rem;">
+                <span style="color: #10b981;"># Clone and Run</span><br>
+                git clone https://github.com/DipeshMajithia/MirrorAI<br>
+                cd MirrorAI && python3 v3/chat_sota.py
+            </div>
+        </section>
+    </div>
+
+    <footer class="footer">
+        <div class="container">
+            <p>Created by Dipesh Majithia | Built with Apple MLX</p>
+        </div>
+    </footer>
+
+    <script src="app.js"></script>
+</body>
+
+</html>

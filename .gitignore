@@ -1,0 +1,36 @@
+# Source Code
+v3/
+v2/
+src/
+MODEL_CARD.md
+RESEARCH_PAPER_DRAFT.md
+requirements.txt
+README.md
+
+# Large data and results
+data/
+out/
+production/
+lm-evaluation-harness/
+*.safetensors
+*.bin
+*.pth
+*.pt
+*.ckpt
+*.txt
+*.bin
+benchmark_results.json
+
+# Explicitly KEEP these essential config/tokenizer files
+!custom_bpe_32k_v2.json
+!v3/chat_sota.py
+!src/model/*.py
+
+# System
+__pycache__/
+*.pyc
+.DS_Store
+.venv
+venv
+env
+.python-version
