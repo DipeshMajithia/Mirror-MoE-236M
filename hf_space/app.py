@@ -189,8 +189,7 @@ demo = gr.ChatInterface(
         ["Hi!", "Hybrid (Chat + Facts)"],
         ["Tell me a short story.", "Hybrid (Chat + Facts)"],
         ["What is 15 * 12?", "Elite (Logic + IQ)"]
-    ],
-    theme="soft"
+    ]
 )
 
 if __name__ == "__main__":
