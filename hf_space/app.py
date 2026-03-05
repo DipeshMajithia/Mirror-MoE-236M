@@ -87,32 +87,58 @@ When you need to perform math calculations, use: <call>calculator("expression")<
 If the user's request is conversational or personal (about you or Dipesh Majithia), answer directly.
 """
 
-# --- Inference Logic ---
-def generate_response(message, history, model_choice):
-    """
-    Generates response using the selected model with repetition penalty.
-    """
-    if not model_choice or model_choice not in loaded_models:
-        model_choice = list(loaded_models.keys())[0] if loaded_models else None
-        
-    if not model_choice:
-        yield "Error: No models loaded on server."
-        return
+import json
+import urllib.request
+import urllib.parse
+import re
 
-    model = loaded_models[model_choice]
+def search_knowledge(query):
+    try:
+        url = f"https://en.wikipedia.org/api/rest_v1/page/summary/{urllib.parse.quote(query)}"
+        req = urllib.request.Request(url, headers={"User-Agent": "MirrorAI/1.0"})
+        with urllib.request.urlopen(req, timeout=5) as resp:
+            data = json.loads(resp.read().decode())
+            extract = data.get("extract", "")
+            if extract:
+                if len(extract) > 300:
+                    extract = extract[:300].rsplit('.', 1)[0] + '.'
+                return extract
+    except Exception:
+        pass
+    try:
+        search_url = f"https://en.wikipedia.org/w/api.php?action=query&list=search&srsearch={urllib.parse.quote(query)}&format=json&srlimit=1"
+        req = urllib.request.Request(search_url, headers={"User-Agent": "MirrorAI/1.0"})
+        with urllib.request.urlopen(req, timeout=5) as resp:
+            data = json.loads(resp.read().decode())
+            results = data.get("query", {}).get("search", [])
+            if results:
+                snippet = results[0].get("snippet", "")
+                snippet = re.sub(r'<[^>]+>', '', snippet)
+                title = results[0].get("title", query)
+                return f"{title}: {snippet}"
+    except Exception:
+        pass
+    return f"Information about '{query}' could not be retrieved."
 
-    # 1. Prompt Building (Aligned with Training - Single Turn Only)
-    full_prompt = f"System: {SYSTEM_PROMPT}\nUser: {message}\nAssistant: "
-    
-    # Tokenize
-    tokens = tokenizer.encode(full_prompt).ids[-448:] # Slightly larger window
+def eval_calculator(expr):
+    try:
+        import math as m
+        safe_dict = {k: v for k, v in m.__dict__.items() if not k.startswith("__")}
+        safe_dict['abs'] = abs
+        safe_dict['round'] = round
+        result = eval(expr, {"__builtins__": None}, safe_dict)
+        return str(result)
+    except Exception as e:
+        return f"Error: {e}"
+
+def generate_part(model, initial_prompt, yield_prefix=""):
+    tokens = tokenizer.encode(initial_prompt).ids[-448:]
     input_ids = torch.tensor([tokens]).to(DEVICE)
     
-    # Generation Params
     max_new_tokens = 200
     temperature = 0.7
     top_k = 40
-    repetition_penalty = 1.5 # Stabilize output (matched to MLX)
+    repetition_penalty = 1.5 
     
     generated_text = ""
     generated_tokens = []
@@ -122,7 +148,6 @@ def generate_response(message, history, model_choice):
             logits = model(input_ids)
             next_token_logits = logits[0, -1, :]
             
-            # Apply Repetition Penalty
             if generated_tokens:
                 for tid in set(generated_tokens):
                     if next_token_logits[tid] > 0:
@@ -130,28 +155,22 @@ def generate_response(message, history, model_choice):
                     else:
                         next_token_logits[tid] *= repetition_penalty
             
-            # Sampling Strategy: Temp + Top-K
             next_token_logits = next_token_logits / temperature
             top_k_probs, top_k_indices = torch.topk(next_token_logits, top_k, dim=-1)
             probs = torch.softmax(top_k_probs, dim=-1)
             
-            # Sample
             next_token_index = torch.multinomial(probs, num_samples=1)
             next_token = top_k_indices[next_token_index].item()
             
-            # Stop if EOS (3)
             if next_token == 3:
                 break
             
             generated_tokens.append(next_token)
-            decoded_char = tokenizer.decode([next_token])
-            
-            # Stop strings logic
-            stop_strings = ["\nUser", "User:", "\nAssistant", "Assistant:", "Context:"]
-            
+            # Use skip_special_tokens=False so <call> strings show up
+            decoded_char = tokenizer.decode([next_token], skip_special_tokens=False)
             generated_text += decoded_char
             
-            # Check for stop strings
+            stop_strings = ["\nUser", "User:", "\nAssistant", "Assistant:", "Context:"]
             break_loop = False
             for s in stop_strings:
                 if s in generated_text:
@@ -159,12 +178,58 @@ def generate_response(message, history, model_choice):
                     break_loop = True
                     break
             
-            if break_loop: break
-                
-            yield generated_text.strip()
+            yield yield_prefix + generated_text
             
-            # Update input
+            if break_loop or "</call>" in generated_text:
+                break
+                
             input_ids = torch.cat([input_ids, torch.tensor([[next_token]]).to(DEVICE)], dim=1)
+
+def generate_response(message, history, model_choice):
+    if not model_choice or model_choice not in loaded_models:
+        model_choice = list(loaded_models.keys())[0] if loaded_models else None
+    if not model_choice:
+        yield "Error: No models loaded on server."
+        return
+    model = loaded_models[model_choice]
+
+    full_prompt = f"System: {SYSTEM_PROMPT}\nUser: {message}\nAssistant: "
+    
+    final_text = ""
+    for text_chunk in generate_part(model, full_prompt, yield_prefix=""):
+        final_text = text_chunk
+        yield final_text
+        
+    # Post-generation tool execution routing
+    if "</call>" in final_text:
+        if "<call>calculator(" in final_text:
+            try:
+                expr = final_text.split('<call>calculator("')[1].split('")</call>')[0]
+                result = eval_calculator(expr)
+                tool_output = f"\n\n**📟 Calculator:** `{expr} = {result}`\n\n"
+                final_text += tool_output
+                yield final_text
+                
+                ctx_prompt = f"System: {SYSTEM_PROMPT}\nUser: {message}\nCalculation Result: {expr} = {result}\nAssistant: "
+                for text_chunk in generate_part(model, ctx_prompt, yield_prefix=final_text):
+                    yield text_chunk
+            except Exception as e:
+                pass
+                
+        elif "<call>search_knowledge(" in final_text:
+            try:
+                query = final_text.split('<call>search_knowledge("')[1].split('")</call>')[0]
+                context = search_knowledge(query)
+                tool_output = f"\n\n**🔍 Search:** `{query}`\n*Found: {context[:100]}...*\n\n"
+                final_text += tool_output
+                yield final_text
+                
+                ctx_prompt = f"System: {SYSTEM_PROMPT}\nUser: {message}\nContext: {context}\nAssistant: "
+                for text_chunk in generate_part(model, ctx_prompt, yield_prefix=final_text):
+                    yield text_chunk
+            except Exception as e:
+                pass
+
 
 # --- Gradio UI ---
 model_names = list(MODELS_CONFIG.keys())
