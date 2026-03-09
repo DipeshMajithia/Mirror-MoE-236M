@@ -23,19 +23,49 @@ def tokenize_v3(tokenizer, input_file, output_path):
     with open(input_file) as f:
         for i, line in enumerate(f):
             row = json.loads(line)
-            sys_text = row.get("system", "")
-            user_text = row.get("user", "")
-            asst_text = row.get("assistant", "")
             
-            prefix_text = f"System: {sys_text}\nUser: {user_text}\nAssistant: "
-            target_text = asst_text
-            
-            prefix_tokens = tokenizer.encode(prefix_text)
-            target_tokens = tokenizer.encode(target_text)
-            target_tokens.append(EOS_ID)
-            
-            input_ids = prefix_tokens + target_tokens
-            labels = [MASK_ID] * len(prefix_tokens) + target_tokens
+            # --- V4 Multi-turn Support ---
+            if "conversation" in row:
+                sys_text = "You are MirrorAI, a personal AI assistant created by Dipesh Majithia.\nYou are helpful, friendly, and knowledgeable.\nWhen you need factual information, use: <call>search_knowledge(\"query\")</call>\nWhen you need to perform math calculations, use: <call>calculator(\"expression\")</call>\nIf the user's request is conversational or personal (about you or Dipesh Majithia), answer directly."
+                
+                # Start with System prompt (masked)
+                input_ids = tokenizer.encode(f"System: {sys_text}\n")
+                labels = [MASK_ID] * len(input_ids)
+                
+                for msg in row["conversation"]:
+                    role = msg["role"]
+                    content = msg["content"]
+                    
+                    if role == "user":
+                        p_toks = tokenizer.encode(f"User: {content}\n")
+                        input_ids.extend(p_toks)
+                        labels.extend([MASK_ID] * len(p_toks))
+                    elif role == "system_reflection":
+                        # We don't train the model to output the reflection itself, it's injected 
+                        p_toks = tokenizer.encode(f"System (Reflection): {content}\n")
+                        input_ids.extend(p_toks)
+                        labels.extend([MASK_ID] * len(p_toks))
+                    elif role == "assistant" or role == "assistant_reflection":
+                        a_toks = tokenizer.encode(f"Assistant: {content}")
+                        a_toks.append(EOS_ID) # End of turn
+                        input_ids.extend(a_toks)
+                        labels.extend(a_toks) # We DO train on the assistant's response
+                        
+            # --- V3 Single-turn Support (Legacy Compat) ---
+            else:
+                sys_text = row.get("system", "")
+                user_text = row.get("user", "")
+                asst_text = row.get("assistant", "")
+                
+                prefix_text = f"System: {sys_text}\nUser: {user_text}\nAssistant: "
+                target_text = asst_text
+                
+                prefix_tokens = tokenizer.encode(prefix_text)
+                target_tokens = tokenizer.encode(target_text)
+                target_tokens.append(EOS_ID)
+                
+                input_ids = prefix_tokens + target_tokens
+                labels = [MASK_ID] * len(prefix_tokens) + target_tokens
             
             # Truncate to MAX_SEQ_LEN
             if len(input_ids) > MAX_SEQ_LEN:
