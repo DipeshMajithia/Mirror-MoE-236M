@@ -112,5 +112,20 @@ To test our "Atomic Token" hypothesis ($p^1 > p^n$), we evaluated MirrorAI V3 ag
 
 ---
 
-## 6. Conclusion
-MirrorAI V3 proves that highly capable, agentic AI models can be trained entirely on consumer hardware. By combining a scaled-down Mixture-of-Experts architecture with the atomic encoding of tool calls and aggressive curriculum sampling, we achieved a model that is both highly accurate at tool-use and competitive on standard NLP benchmarks, while using a fraction of the computational budget of standard open-source SLMs.
+## 6. MirrorAI V4: System 2 Self-Correction
+While MirrorAI V3 implemented the inference-time self-correction *harness* (System 2), the V3 weights were not explicitly trained on error-recovery chains, resulting in a 0.0% zero-shot recovery rate.
+
+For **MirrorAI V4**, we generated a balanced, synthetic "Resilient Agent" curriculum of 3,000 multi-turn reflection sequences (in-distribution syntax corrections, semantic logic rewrites, and graceful degradation paths) and fine-tuned the model for 3 epochs.
+
+### 6.1 Error Recovery Benchmark
+Tested on a zero-shot dataset of 100 broken tool calls (including out-of-distribution logic errors never seen in training). The model is given a single "Reflection Prompt" containing the Python execution error.
+
+| Model | Syntax Success (Base) | Error Recovery Rate |
+|-------|-----------------------|---------------------|
+| MirrorAI V3 | 57.0% | 0.0% |
+| **MirrorAI V4** | **57.0%** | **32.0%** |
+
+**Conclusion:** MirrorAI V4 successfully demonstrates that "System 2" reflective reasoning is not an emergent property exclusive to massive models. A 236M parameter model, when trained on a highly focused Reflection Curriculum, can autonomously debug its own execution errors and generate corrected logic zero-shot 32.0% of the time.
+
+## 7. Conclusion
+MirrorAI V4 proves that highly capable, agentic AI models can be trained entirely on consumer hardware. By combining a scaled-down Mixture-of-Experts architecture with the atomic encoding of tool calls ($p^1$) and responsive System 2 self-correction logic, we have created an offline-first model that is highly resilient at tool-use.
