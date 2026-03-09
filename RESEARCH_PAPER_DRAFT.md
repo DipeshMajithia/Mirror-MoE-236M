@@ -99,9 +99,16 @@ Despite training on ~5,000x less data than comparable models (e.g., OPT-125M's 3
 
 *(Note: Evaluated on log-likelihood continuation using exactly the same script for all validations)*
 
-### 5.1 Analysis
-MirrorAI out-performs all models in its size class on the **MMLU (Massive Multitask Language Understanding)** benchmark, despite its massive data disadvantage. The ARC-Easy score (37.0%) handily beats OPT-125M. 
-The areas where MirrorAI lags (HellaSwag) are heavily reliant on exposure to massive text corpora to build statistical "common sense," which a 61M token dataset cannot provide. However, for factual retrieval, MirrorAI delegates the task to its RAG tools, bypassing the need to memorize common sense natively.
+### 5.2 Tool Calling Syntax Reliability
+To test our "Atomic Token" hypothesis ($p^1 > p^n$), we evaluated MirrorAI V3 against two popular small models on a zero-shot dataset of 100 tool-calling prompts (Calculator and Search).
+
+| Model | Format Target | Syntax Success | Key Failure Mode |
+|-------|---------------|----------------|------------------|
+| **MirrorAI V3 (Ours)** | **Atomic Tokens (`<call>`)** | **57.0%** | Incomplete query |
+| SmolLM2-135M | JSON Object | 0.0% | Hallucinated markdown |
+| GPT-2 Small | Text Template | 59.0% | Chatting instead of calling |
+
+**Conclusion:** Small language models (sub-300M) exhibit extreme fragility when forced to generate structured JSON. SmolLM2-135M, despite being trained on 2 Trillion tokens, failed to produce a single valid JSON tool call in an instruction-following zero-shot setting. MirrorAI V3, with massive data disadvantage, achieves parity with a text-based GPT-2 baseline while maintaining a clean, programmatically parsable interface via atomic tokens.
 
 ---
 

@@ -1,0 +1,602 @@
+[
+  {
+    "prompt": "569 - 52 = ?",
+    "expected_tool": "calculator",
+    "expected_query_content": "569",
+    "category": "calculator"
+  },
+  {
+    "prompt": "Tell me about the meaning of life.",
+    "expected_tool": "search_knowledge",
+    "expected_query_content": "meaning of life",
+    "category": "search"
+  },
+  {
+    "prompt": "What is Albert Einstein?",
+    "expected_tool": "search_knowledge",
+    "expected_query_content": "Albert Einstein",
+    "category": "search"
+  },
+  {
+    "prompt": "I have 40 apples and someone gives me 52 more. How many do I have total?",
+    "expected_tool": "calculator",
+    "expected_query_content": "40",
+    "category": "general_math"
+  },
+  {
+    "prompt": "Can you look up the structure of DNA?",
+    "expected_tool": "search_knowledge",
+    "expected_query_content": "structure of DNA",
+    "category": "search"
+  },
+  {
+    "prompt": "I'm curious about how to bake a cake. Do you know anything?",
+    "expected_tool": "search_knowledge",
+    "expected_query_content": "cake",
+    "category": "general_search"
+  },
+  {
+    "prompt": "I'm curious about how to bake a cake. Do you know anything?",
+    "expected_tool": "search_knowledge",
+    "expected_query_content": "cake",
+    "category": "general_search"
+  },
+  {
+    "prompt": "I'm curious about recent discoveries in Mars. Do you know anything?",
+    "expected_tool": "search_knowledge",
+    "expected_query_content": "Mars",
+    "category": "general_search"
+  },
+  {
+    "prompt": "I'm curious about symptoms of a cold. Do you know anything?",
+    "expected_tool": "search_knowledge",
+    "expected_query_content": "cold",
+    "category": "general_search"
+  },
+  {
+    "prompt": "What is the tallest building in the world?",
+    "expected_tool": "search_knowledge",
+    "expected_query_content": "tallest building in world",
+    "category": "search"
+  },
+  {
+    "prompt": "Calculate 199 plus 581.",
+    "expected_tool": "calculator",
+    "expected_query_content": "199",
+    "category": "calculator"
+  },
+  {
+    "prompt": "I have 97 apples and someone gives me 18 more. How many do I have total?",
+    "expected_tool": "calculator",
+    "expected_query_content": "97",
+    "category": "general_math"
+  },
+  {
+    "prompt": "Calculate 709 divided by 56.",
+    "expected_tool": "calculator",
+    "expected_query_content": "709",
+    "category": "calculator"
+  },
+  {
+    "prompt": "I'm curious about symptoms of a cold. Do you know anything?",
+    "expected_tool": "search_knowledge",
+    "expected_query_content": "cold",
+    "category": "general_search"
+  },
+  {
+    "prompt": "Tell me about the capital of Japan.",
+    "expected_tool": "search_knowledge",
+    "expected_query_content": "capital of Japan",
+    "category": "search"
+  },
+  {
+    "prompt": "Can you look up quantum computing?",
+    "expected_tool": "search_knowledge",
+    "expected_query_content": "quantum computing",
+    "category": "search"
+  },
+  {
+    "prompt": "Can you look up the longest river?",
+    "expected_tool": "search_knowledge",
+    "expected_query_content": "longest river",
+    "category": "search"
+  },
+  {
+    "prompt": "Please compute 510 times 993.",
+    "expected_tool": "calculator",
+    "expected_query_content": "510",
+    "category": "calculator"
+  },
+  {
+    "prompt": "Can you tell me the result of 199 - 101?",
+    "expected_tool": "calculator",
+    "expected_query_content": "199",
+    "category": "calculator"
+  },
+  {
+    "prompt": "I'm curious about best movies of 2023. Do you know anything?",
+    "expected_tool": "search_knowledge",
+    "expected_query_content": "2023",
+    "category": "general_search"
+  },
+  {
+    "prompt": "I have 82 apples and someone gives me 51 more. How many do I have total?",
+    "expected_tool": "calculator",
+    "expected_query_content": "82",
+    "category": "general_math"
+  },
+  {
+    "prompt": "What is the theory of relativity?",
+    "expected_tool": "search_knowledge",
+    "expected_query_content": "theory of relativity",
+    "category": "search"
+  },
+  {
+    "prompt": "Can you look up the human genome?",
+    "expected_tool": "search_knowledge",
+    "expected_query_content": "human genome",
+    "category": "search"
+  },
+  {
+    "prompt": "I'm curious about symptoms of a cold. Do you know anything?",
+    "expected_tool": "search_knowledge",
+    "expected_query_content": "cold",
+    "category": "general_search"
+  },
+  {
+    "prompt": "I have 100 apples and someone gives me 93 more. How many do I have total?",
+    "expected_tool": "calculator",
+    "expected_query_content": "100",
+    "category": "general_math"
+  },
+  {
+    "prompt": "Tell me about Isaac Newton.",
+    "expected_tool": "search_knowledge",
+    "expected_query_content": "Isaac Newton",
+    "category": "search"
+  },
+  {
+    "prompt": "Please compute 640 divided by 152.",
+    "expected_tool": "calculator",
+    "expected_query_content": "640",
+    "category": "calculator"
+  },
+  {
+    "prompt": "Please compute 465 divided by 198.",
+    "expected_tool": "calculator",
+    "expected_query_content": "465",
+    "category": "calculator"
+  },
+  {
+    "prompt": "What is Julius Caesar?",
+    "expected_tool": "search_knowledge",
+    "expected_query_content": "Julius Caesar",
+    "category": "search"
+  },
+  {
+    "prompt": "Can you tell me the result of 357 - 177?",
+    "expected_tool": "calculator",
+    "expected_query_content": "357",
+    "category": "calculator"
+  },
+  {
+    "prompt": "Please compute 881 minus 48.",
+    "expected_tool": "calculator",
+    "expected_query_content": "881",
+    "category": "calculator"
+  },
+  {
+    "prompt": "Find information about the longest river.",
+    "expected_tool": "search_knowledge",
+    "expected_query_content": "longest river",
+    "category": "search"
+  },
+  {
+    "prompt": "What is 199 - 903?",
+    "expected_tool": "calculator",
+    "expected_query_content": "199",
+    "category": "calculator"
+  },
+  {
+    "prompt": "Tell me about the longest river.",
+    "expected_tool": "search_knowledge",
+    "expected_query_content": "longest river",
+    "category": "search"
+  },
+  {
+    "prompt": "Please compute 788 divided by 912.",
+    "expected_tool": "calculator",
+    "expected_query_content": "788",
+    "category": "calculator"
+  },
+  {
+    "prompt": "923 - 416 = ?",
+    "expected_tool": "calculator",
+    "expected_query_content": "923",
+    "category": "calculator"
+  },
+  {
+    "prompt": "Who is the inventor of the telephone?",
+    "expected_tool": "search_knowledge",
+    "expected_query_content": "inventor of telephone",
+    "category": "search"
+  },
+  {
+    "prompt": "I'm curious about symptoms of a cold. Do you know anything?",
+    "expected_tool": "search_knowledge",
+    "expected_query_content": "cold",
+    "category": "general_search"
+  },
+  {
+    "prompt": "Tell me about Julius Caesar.",
+    "expected_tool": "search_knowledge",
+    "expected_query_content": "Julius Caesar",
+    "category": "search"
+  },
+  {
+    "prompt": "712 * 750 = ?",
+    "expected_tool": "calculator",
+    "expected_query_content": "712",
+    "category": "calculator"
+  },
+  {
+    "prompt": "I have 39 apples and someone gives me 63 more. How many do I have total?",
+    "expected_tool": "calculator",
+    "expected_query_content": "39",
+    "category": "general_math"
+  },
+  {
+    "prompt": "I have 37 apples and someone gives me 30 more. How many do I have total?",
+    "expected_tool": "calculator",
+    "expected_query_content": "37",
+    "category": "general_math"
+  },
+  {
+    "prompt": "I have 72 apples and someone gives me 97 more. How many do I have total?",
+    "expected_tool": "calculator",
+    "expected_query_content": "72",
+    "category": "general_math"
+  },
+  {
+    "prompt": "I have 81 apples and someone gives me 72 more. How many do I have total?",
+    "expected_tool": "calculator",
+    "expected_query_content": "81",
+    "category": "general_math"
+  },
+  {
+    "prompt": "471 * 991 = ?",
+    "expected_tool": "calculator",
+    "expected_query_content": "471",
+    "category": "calculator"
+  },
+  {
+    "prompt": "I'm curious about best movies of 2023. Do you know anything?",
+    "expected_tool": "search_knowledge",
+    "expected_query_content": "2023",
+    "category": "general_search"
+  },
+  {
+    "prompt": "Calculate 544 minus 582.",
+    "expected_tool": "calculator",
+    "expected_query_content": "544",
+    "category": "calculator"
+  },
+  {
+    "prompt": "Search for the capital of Japan.",
+    "expected_tool": "search_knowledge",
+    "expected_query_content": "capital of Japan",
+    "category": "search"
+  },
+  {
+    "prompt": "I'm curious about how to bake a cake. Do you know anything?",
+    "expected_tool": "search_knowledge",
+    "expected_query_content": "cake",
+    "category": "general_search"
+  },
+  {
+    "prompt": "Find information about the inventor of the telephone.",
+    "expected_tool": "search_knowledge",
+    "expected_query_content": "inventor of telephone",
+    "category": "search"
+  },
+  {
+    "prompt": "675 * 880 = ?",
+    "expected_tool": "calculator",
+    "expected_query_content": "675",
+    "category": "calculator"
+  },
+  {
+    "prompt": "Calculate 75 divided by 574.",
+    "expected_tool": "calculator",
+    "expected_query_content": "75",
+    "category": "calculator"
+  },
+  {
+    "prompt": "Please compute 971 divided by 734.",
+    "expected_tool": "calculator",
+    "expected_query_content": "971",
+    "category": "calculator"
+  },
+  {
+    "prompt": "Can you tell me the result of 26 - 933?",
+    "expected_tool": "calculator",
+    "expected_query_content": "26",
+    "category": "calculator"
+  },
+  {
+    "prompt": "What is the smallest planet?",
+    "expected_tool": "search_knowledge",
+    "expected_query_content": "smallest planet",
+    "category": "search"
+  },
+  {
+    "prompt": "Find information about the longest river.",
+    "expected_tool": "search_knowledge",
+    "expected_query_content": "longest river",
+    "category": "search"
+  },
+  {
+    "prompt": "I have 50 apples and someone gives me 12 more. How many do I have total?",
+    "expected_tool": "calculator",
+    "expected_query_content": "50",
+    "category": "general_math"
+  },
+  {
+    "prompt": "Search for the smallest planet.",
+    "expected_tool": "search_knowledge",
+    "expected_query_content": "smallest planet",
+    "category": "search"
+  },
+  {
+    "prompt": "I have 72 apples and someone gives me 33 more. How many do I have total?",
+    "expected_tool": "calculator",
+    "expected_query_content": "72",
+    "category": "general_math"
+  },
+  {
+    "prompt": "I'm curious about how to bake a cake. Do you know anything?",
+    "expected_tool": "search_knowledge",
+    "expected_query_content": "cake",
+    "category": "general_search"
+  },
+  {
+    "prompt": "I'm curious about how to bake a cake. Do you know anything?",
+    "expected_tool": "search_knowledge",
+    "expected_query_content": "cake",
+    "category": "general_search"
+  },
+  {
+    "prompt": "877 + 155 = ?",
+    "expected_tool": "calculator",
+    "expected_query_content": "877",
+    "category": "calculator"
+  },
+  {
+    "prompt": "790 - 360 = ?",
+    "expected_tool": "calculator",
+    "expected_query_content": "790",
+    "category": "calculator"
+  },
+  {
+    "prompt": "Search for black holes.",
+    "expected_tool": "search_knowledge",
+    "expected_query_content": "black holes",
+    "category": "search"
+  },
+  {
+    "prompt": "I'm curious about recent discoveries in Mars. Do you know anything?",
+    "expected_tool": "search_knowledge",
+    "expected_query_content": "Mars",
+    "category": "general_search"
+  },
+  {
+    "prompt": "Tell me about the inventor of the telephone.",
+    "expected_tool": "search_knowledge",
+    "expected_query_content": "inventor of telephone",
+    "category": "search"
+  },
+  {
+    "prompt": "Find information about the human genome.",
+    "expected_tool": "search_knowledge",
+    "expected_query_content": "human genome",
+    "category": "search"
+  },
+  {
+    "prompt": "Calculate 495 plus 364.",
+    "expected_tool": "calculator",
+    "expected_query_content": "495",
+    "category": "calculator"
+  },
+  {
+    "prompt": "Please compute 155 divided by 301.",
+    "expected_tool": "calculator",
+    "expected_query_content": "155",
+    "category": "calculator"
+  },
+  {
+    "prompt": "Find information about Isaac Newton.",
+    "expected_tool": "search_knowledge",
+    "expected_query_content": "Isaac Newton",
+    "category": "search"
+  },
+  {
+    "prompt": "Calculate 405 divided by 795.",
+    "expected_tool": "calculator",
+    "expected_query_content": "405",
+    "category": "calculator"
+  },
+  {
+    "prompt": "Search for the Mariana Trench.",
+    "expected_tool": "search_knowledge",
+    "expected_query_content": "Mariana Trench",
+    "category": "search"
+  },
+  {
+    "prompt": "I have 44 apples and someone gives me 43 more. How many do I have total?",
+    "expected_tool": "calculator",
+    "expected_query_content": "44",
+    "category": "general_math"
+  },
+  {
+    "prompt": "I'm curious about recent discoveries in Mars. Do you know anything?",
+    "expected_tool": "search_knowledge",
+    "expected_query_content": "Mars",
+    "category": "general_search"
+  },
+  {
+    "prompt": "I'm curious about symptoms of a cold. Do you know anything?",
+    "expected_tool": "search_knowledge",
+    "expected_query_content": "cold",
+    "category": "general_search"
+  },
+  {
+    "prompt": "What is 505 * 502?",
+    "expected_tool": "calculator",
+    "expected_query_content": "505",
+    "category": "calculator"
+  },
+  {
+    "prompt": "Find information about Isaac Newton.",
+    "expected_tool": "search_knowledge",
+    "expected_query_content": "Isaac Newton",
+    "category": "search"
+  },
+  {
+    "prompt": "Calculate 291 minus 632.",
+    "expected_tool": "calculator",
+    "expected_query_content": "291",
+    "category": "calculator"
+  },
+  {
+    "prompt": "587 - 783 = ?",
+    "expected_tool": "calculator",
+    "expected_query_content": "587",
+    "category": "calculator"
+  },
+  {
+    "prompt": "Tell me about the capital of Japan.",
+    "expected_tool": "search_knowledge",
+    "expected_query_content": "capital of Japan",
+    "category": "search"
+  },
+  {
+    "prompt": "I'm curious about symptoms of a cold. Do you know anything?",
+    "expected_tool": "search_knowledge",
+    "expected_query_content": "cold",
+    "category": "general_search"
+  },
+  {
+    "prompt": "Calculate 830 multiplied by 483.",
+    "expected_tool": "calculator",
+    "expected_query_content": "830",
+    "category": "calculator"
+  },
+  {
+    "prompt": "Find information about the Big Bang theory.",
+    "expected_tool": "search_knowledge",
+    "expected_query_content": "Big Bang theory",
+    "category": "search"
+  },
+  {
+    "prompt": "I'm curious about symptoms of a cold. Do you know anything?",
+    "expected_tool": "search_knowledge",
+    "expected_query_content": "cold",
+    "category": "general_search"
+  },
+  {
+    "prompt": "Can you look up Mount Everest?",
+    "expected_tool": "search_knowledge",
+    "expected_query_content": "Mount Everest",
+    "category": "search"
+  },
+  {
+    "prompt": "What is the structure of DNA?",
+    "expected_tool": "search_knowledge",
+    "expected_query_content": "structure of DNA",
+    "category": "search"
+  },
+  {
+    "prompt": "I have 5 apples and someone gives me 35 more. How many do I have total?",
+    "expected_tool": "calculator",
+    "expected_query_content": "5",
+    "category": "general_math"
+  },
+  {
+    "prompt": "What is 525 * 516?",
+    "expected_tool": "calculator",
+    "expected_query_content": "525",
+    "category": "calculator"
+  },
+  {
+    "prompt": "What is 15 * 259?",
+    "expected_tool": "calculator",
+    "expected_query_content": "15",
+    "category": "calculator"
+  },
+  {
+    "prompt": "What is 677 + 190?",
+    "expected_tool": "calculator",
+    "expected_query_content": "677",
+    "category": "calculator"
+  },
+  {
+    "prompt": "Can you tell me the result of 549 - 66?",
+    "expected_tool": "calculator",
+    "expected_query_content": "549",
+    "category": "calculator"
+  },
+  {
+    "prompt": "Find information about the history of Rome.",
+    "expected_tool": "search_knowledge",
+    "expected_query_content": "history of Rome",
+    "category": "search"
+  },
+  {
+    "prompt": "Search for the current weather in Tokyo.",
+    "expected_tool": "search_knowledge",
+    "expected_query_content": "current weather in Tokyo",
+    "category": "search"
+  },
+  {
+    "prompt": "Calculate 185 minus 72.",
+    "expected_tool": "calculator",
+    "expected_query_content": "185",
+    "category": "calculator"
+  },
+  {
+    "prompt": "Calculate 819 divided by 986.",
+    "expected_tool": "calculator",
+    "expected_query_content": "819",
+    "category": "calculator"
+  },
+  {
+    "prompt": "I have 96 apples and someone gives me 56 more. How many do I have total?",
+    "expected_tool": "calculator",
+    "expected_query_content": "96",
+    "category": "general_math"
+  },
+  {
+    "prompt": "Please compute 602 plus 680.",
+    "expected_tool": "calculator",
+    "expected_query_content": "602",
+    "category": "calculator"
+  },
+  {
+    "prompt": "Tell me about SpaceX.",
+    "expected_tool": "search_knowledge",
+    "expected_query_content": "SpaceX",
+    "category": "search"
+  },
+  {
+    "prompt": "Search for the Big Bang theory.",
+    "expected_tool": "search_knowledge",
+    "expected_query_content": "Big Bang theory",
+    "category": "search"
+  },
+  {
+    "prompt": "Tell me about the Eiffel Tower.",
+    "expected_tool": "search_knowledge",
+    "expected_query_content": "Eiffel Tower",
+    "category": "search"
+  }
+]
